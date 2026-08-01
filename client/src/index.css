@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+@import './styles/themes.css';
+
+/* `inline` is load-bearing: it makes the generated utilities reference the CSS
+ * variable at runtime instead of baking its value in at build time. Without
+ * it, switching themes would do nothing. */
+@theme inline {
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-inset: var(--bg-inset);
+  --color-hover: var(--bg-hover);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-success: var(--success);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    /* Themes change instantly, but the transition makes the change feel
+     * deliberate rather than like a flash of restyled content. */
+    transition: background-color 240ms ease, color 240ms ease;
+  }
+
+  body {
+    background: var(--app-bg, var(--bg-base));
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* Density is a user setting, so it lives in a variable that components read
+   * for their vertical rhythm rather than in per-component conditionals. */
+  [data-density='comfortable'] { --row-gap: 0.5rem; --bubble-pad: 0.625rem 0.875rem; }
+  [data-density='compact']     { --row-gap: 0.125rem; --bubble-pad: 0.375rem 0.75rem; }
+
+  /* Honouring the OS setting is not optional — motion can be genuinely
+   * unpleasant for some people. `data-motion` lets users opt out in-app too. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  [data-motion='reduced'] *, [data-motion='reduced'] *::before {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  ::selection { background: var(--accent-soft); color: var(--text-primary); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+  .scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 99px;
+  }
+  .scroll-thin::-webkit-scrollbar-track { background: transparent; }
+
+  .glass {
+    background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+  }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 var(--accent-soft); }
+  70% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.animate-pulse-ring { animation: pulse-ring 2s infinite; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}

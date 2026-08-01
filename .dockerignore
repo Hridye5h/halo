@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+client/dist
+server/uploads
+.git
+.github
+.claude
+*.log
+.env
+.env.*
+!.env.example
+README.md
+ARCHITECTURE.md
+DEPLOYMENT.md

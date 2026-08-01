@@ -1,0 +1,37 @@
+# render.yaml — https://render.com
+#
+# Frankfurt for the same reason as fly.toml: it balances latency across widely
+# separated regions. See DEPLOYMENT.md §1.
+#
+# Note: Render's free tier spins services down when idle, which drops every
+# websocket and makes the first message after a quiet period slow. The outbox
+# handles it correctly, but a paid instance is what you want for a chat app.
+
+services:
+  - type: web
+    name: halo
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: frankfurt
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      # Set in the dashboard — never commit these.
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: SOCKET_TICKET_SECRET
+        generateValue: true
+      # WARNING: IDENTITY_PEPPER can never be rotated. It keys the lookup for
+      # every identity token ever issued — change it and every recovery phrase
+      # your users wrote down stops working, permanently. Generated once here;
+      # back it up somewhere you will still have in five years.
+      - key: IDENTITY_PEPPER
+        generateValue: true

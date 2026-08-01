@@ -1,0 +1,227 @@
+/* ---------------------------------------------------------------------------
+ * The theme layer.
+ *
+ * Nothing in the app names a colour. Components use semantic Tailwind classes
+ * (bg-surface, text-primary, border-line) which resolve to the CSS variables
+ * below, and a theme is just a different set of values for those variables.
+ *
+ * That indirection is what makes user-authored themes possible at all: a
+ * custom theme is a JSON object of these ~26 keys, so it can be stored on the
+ * user document, synced across devices, and shared as a code.
+ *
+ * Switching a theme swaps variables on <html>. No re-render, no flash.
+ * ------------------------------------------------------------------------ */
+
+:root,
+[data-theme='midnight'] {
+  color-scheme: dark;
+
+  --bg-base: #0a0a0f;
+  --bg-surface: #12121a;
+  --bg-elevated: #1a1a25;
+  --bg-inset: #08080c;
+  --bg-hover: #1f1f2b;
+
+  --text-primary: #f2f2f7;
+  --text-secondary: #a8a8bd;
+  --text-muted: #6b6b85;
+
+  --accent: #7c5cff;
+  --accent-hover: #8f73ff;
+  --accent-soft: #7c5cff26;
+  --accent-contrast: #ffffff;
+
+  --line: #23232f;
+  --line-strong: #33334a;
+
+  --success: #3ecf8e;
+  --warn: #f5a623;
+  --danger: #ff5c72;
+
+  --bubble-me: linear-gradient(135deg, #7c5cff, #5b3ee8);
+  --bubble-me-text: #ffffff;
+  --bubble-them: #1a1a25;
+  --bubble-them-text: #f2f2f7;
+
+  --glow: 0 0 40px -10px #7c5cff80;
+  --app-bg: radial-gradient(1200px 600px at 15% -10%, #1b1636 0%, transparent 60%),
+            radial-gradient(1000px 500px at 100% 0%, #10203a 0%, transparent 55%),
+            #0a0a0f;
+}
+
+[data-theme='chess'] {
+  color-scheme: dark;
+
+  --bg-base: #161512;
+  --bg-surface: #1f1e1a;
+  --bg-elevated: #2a2823;
+  --bg-inset: #100f0d;
+  --bg-hover: #33302a;
+
+  --text-primary: #f0ece4;
+  --text-secondary: #b0a894;
+  --text-muted: #7a7263;
+
+  --accent: #7fa650;
+  --accent-hover: #93bb5f;
+  --accent-soft: #7fa65026;
+  --accent-contrast: #10120c;
+
+  --line: #302d26;
+  --line-strong: #45413a;
+
+  --success: #7fa650;
+  --warn: #d8a24a;
+  --danger: #c8503c;
+
+  --bubble-me: linear-gradient(135deg, #7fa650, #648040);
+  --bubble-me-text: #0f1109;
+  --bubble-them: #2a2823;
+  --bubble-them-text: #f0ece4;
+
+  --glow: 0 0 40px -12px #7fa65066;
+  --app-bg: linear-gradient(160deg, #1c1b17 0%, #161512 60%);
+}
+
+[data-theme='galaxy'] {
+  color-scheme: dark;
+
+  --bg-base: #06060f;
+  --bg-surface: #0f1024;
+  --bg-elevated: #171a3a;
+  --bg-inset: #040409;
+  --bg-hover: #1e2149;
+
+  --text-primary: #eef0ff;
+  --text-secondary: #a6adde;
+  --text-muted: #6a71a8;
+
+  --accent: #5b8cff;
+  --accent-hover: #7aa2ff;
+  --accent-soft: #5b8cff26;
+  --accent-contrast: #ffffff;
+
+  --line: #1e2149;
+  --line-strong: #2f3468;
+
+  --success: #4fd6c4;
+  --warn: #ffc857;
+  --danger: #ff6b8a;
+
+  --bubble-me: linear-gradient(135deg, #5b8cff, #a855f7);
+  --bubble-me-text: #ffffff;
+  --bubble-them: #171a3a;
+  --bubble-them-text: #eef0ff;
+
+  --glow: 0 0 50px -10px #7c5cffaa;
+  --app-bg: radial-gradient(900px 500px at 80% -5%, #2a1b5e 0%, transparent 55%),
+            radial-gradient(1100px 600px at 0% 20%, #0d2a5e 0%, transparent 60%),
+            #06060f;
+}
+
+[data-theme='cyberpunk'] {
+  color-scheme: dark;
+
+  --bg-base: #0b0410;
+  --bg-surface: #150920;
+  --bg-elevated: #1f0f2e;
+  --bg-inset: #07020c;
+  --bg-hover: #2a1440;
+
+  --text-primary: #f7e9ff;
+  --text-secondary: #c08ae0;
+  --text-muted: #8355a3;
+
+  --accent: #ff2e88;
+  --accent-hover: #ff56a1;
+  --accent-soft: #ff2e8826;
+  --accent-contrast: #10020a;
+
+  --line: #2d1442;
+  --line-strong: #46216a;
+
+  --success: #00f5d4;
+  --warn: #ffd23f;
+  --danger: #ff2e5b;
+
+  --bubble-me: linear-gradient(135deg, #ff2e88, #b026ff);
+  --bubble-me-text: #ffffff;
+  --bubble-them: #1f0f2e;
+  --bubble-them-text: #f7e9ff;
+
+  --glow: 0 0 44px -8px #ff2e88aa;
+  --app-bg: radial-gradient(900px 500px at 100% 0%, #3d0a4d 0%, transparent 55%),
+            radial-gradient(900px 500px at 0% 100%, #06304d 0%, transparent 55%),
+            #0b0410;
+}
+
+[data-theme='forest'] {
+  color-scheme: dark;
+
+  --bg-base: #0b120e;
+  --bg-surface: #121c17;
+  --bg-elevated: #1a2721;
+  --bg-inset: #070d0a;
+  --bg-hover: #223229;
+
+  --text-primary: #e8f2ea;
+  --text-secondary: #9db8a7;
+  --text-muted: #66826f;
+
+  --accent: #4ade80;
+  --accent-hover: #6ee79a;
+  --accent-soft: #4ade8026;
+  --accent-contrast: #06180d;
+
+  --line: #1f2f26;
+  --line-strong: #2f453a;
+
+  --success: #4ade80;
+  --warn: #e3b341;
+  --danger: #f87171;
+
+  --bubble-me: linear-gradient(135deg, #4ade80, #22a06b);
+  --bubble-me-text: #05170c;
+  --bubble-them: #1a2721;
+  --bubble-them-text: #e8f2ea;
+
+  --glow: 0 0 40px -12px #4ade8066;
+  --app-bg: radial-gradient(1000px 500px at 20% 0%, #12301f 0%, transparent 60%), #0b120e;
+}
+
+[data-theme='sakura'] {
+  color-scheme: light;
+
+  --bg-base: #fff7f9;
+  --bg-surface: #ffffff;
+  --bg-elevated: #fff0f4;
+  --bg-inset: #ffeaf0;
+  --bg-hover: #ffe3ea;
+
+  --text-primary: #2c1c24;
+  --text-secondary: #7a5d68;
+  --text-muted: #a98d98;
+
+  --accent: #e8578c;
+  --accent-hover: #f06e9d;
+  --accent-soft: #e8578c1f;
+  --accent-contrast: #ffffff;
+
+  --line: #f6dbe3;
+  --line-strong: #ecc2ce;
+
+  --success: #35b57e;
+  --warn: #d98b1e;
+  --danger: #e0455e;
+
+  --bubble-me: linear-gradient(135deg, #f06e9d, #e8578c);
+  --bubble-me-text: #ffffff;
+  --bubble-them: #fff0f4;
+  --bubble-them-text: #2c1c24;
+
+  --glow: 0 0 40px -14px #e8578c55;
+  --app-bg: radial-gradient(900px 500px at 90% -10%, #ffdde7 0%, transparent 60%), #fff7f9;
+}
+
+/* Custom themes are applied by writing these same variables inline on <html>
+ * from the user's saved theme object — see lib/theme.js. */
