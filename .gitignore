@@ -8,3 +8,6 @@ build/
 server/uploads/
 .mongo-data/
 .cache/
+
+# Local editor / tooling config
+.claude/
