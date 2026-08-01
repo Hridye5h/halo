@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -11,6 +11,7 @@ import { Input } from '../../components/ui/Input.jsx';
 import {
   flagOf, joinedLabel, lastSeen, presenceOf, localTimeIn, hoursApart, formatHourGap,
 } from '../../lib/format.js';
+import { keyFingerprint } from '../../lib/crypto.js';
 
 export function ProfilePage() {
   const { userId } = useParams();
@@ -125,10 +126,62 @@ export function ProfilePage() {
                   <Stat label="Lichess" value={profile.chess.lichessUsername} />
                 )}
               </dl>
+
+              <KeyFingerprint
+                publicKey={profile.publicKey}
+                isSelf={isSelf}
+                name={profile.displayName}
+              />
             </>
           )}
         </motion.div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Safety number.
+ *
+ * Both people should see the same string. If they do not, someone is sitting
+ * between them — which is precisely the attack that strong ciphers cannot
+ * detect on their own.
+ */
+function KeyFingerprint({ publicKey, isSelf, name }) {
+  const [fingerprint, setFingerprint] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    keyFingerprint(publicKey).then((value) => { if (!cancelled) setFingerprint(value); });
+    return () => { cancelled = true; };
+  }, [publicKey]);
+
+  if (!publicKey) {
+    return (
+      <div className="card mt-6 p-4">
+        <p className="text-xs text-muted">Encryption key</p>
+        <p className="mt-1 text-sm text-secondary">
+          {isSelf
+            ? 'Not set up yet. Open any conversation and choose Encrypt.'
+            : `${name} has not set up encryption yet.`}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="card mt-6 p-4">
+      <p className="text-xs text-muted">
+        {isSelf ? 'Your safety number' : 'Safety number'}
+      </p>
+      <code className="mt-1.5 block font-mono text-sm tracking-wider text-primary">
+        {fingerprint ?? '····'}
+      </code>
+      <p className="mt-2 text-xs leading-relaxed text-muted">
+        {isSelf
+          ? 'Read this out to a friend over a call. If it matches what they see on your profile, nobody is intercepting your encrypted messages.'
+          : `Compare this with ${name} over a call or in person. If it matches, your encrypted messages are going only to them.`}
+      </p>
     </div>
   );
 }

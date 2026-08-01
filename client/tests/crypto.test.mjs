@@ -133,5 +133,14 @@ check('parses a key file', v.parseKeyBackup(JSON.stringify(wrapped))?.key === wr
 check('rejects a bogus key file', v.parseKeyBackup('{"nope":true}') === null);
 check('rejects non-JSON', v.parseKeyBackup('definitely not json') === null);
 
+// --- fingerprints -----------------------------------------------------------
+const aliceFp = await v.keyFingerprint(alicePub);
+const bobFp = await v.keyFingerprint(bobPub);
+
+check('fingerprint is readable groups of hex', /^[0-9A-F]{4}( [0-9A-F]{4}){4}$/.test(aliceFp), aliceFp);
+check('different keys give different fingerprints', aliceFp !== bobFp);
+check('fingerprint is stable', (await v.keyFingerprint(alicePub)) === aliceFp);
+check('no key gives no fingerprint', (await v.keyFingerprint('')) === null);
+
 console.log(failures === 0 ? '\nALL PASSED' : `\n${failures} FAILED`);
 process.exit(failures === 0 ? 0 : 1);

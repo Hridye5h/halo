@@ -218,6 +218,32 @@ export async function decryptMessage(key, payload) {
 
 export const isCiphertext = (value) => typeof value === 'string' && value.startsWith('v1.');
 
+/* ── fingerprints ─────────────────────────────────────────────────────────── */
+
+/**
+ * A short, human-comparable fingerprint of a public key.
+ *
+ * This is what closes the last hole in the scheme. Public keys are handed out
+ * by the server, so a malicious or compromised server could hand you *its* key
+ * instead of your friend's and read everything in the middle. No amount of
+ * cipher strength prevents that — the only defence is comparing fingerprints
+ * over a channel the server does not control (out loud, on a call, in person).
+ *
+ * Formatted as five groups of four hex characters: long enough that forging a
+ * match is infeasible, short enough that two people will actually read it out.
+ */
+export async function keyFingerprint(publicKeyBase64) {
+  if (!publicKeyBase64) return null;
+  const digest = await crypto.subtle.digest('SHA-256', fromBase64(publicKeyBase64));
+
+  const hex = [...new Uint8Array(digest)]
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase();
+
+  return hex.slice(0, 20).match(/.{4}/g).join(' ');
+}
+
 /* ── backup ───────────────────────────────────────────────────────────────── */
 
 /**

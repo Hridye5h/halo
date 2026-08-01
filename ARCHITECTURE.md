@@ -524,6 +524,27 @@ Enabling vault mode is **one-way**. Everything already written stays
 encrypted, so allowing "off" would produce a half-readable conversation with no
 honest way to describe it.
 
+### Safety numbers — closing the substitution hole
+
+Public keys are distributed *by the server*. A malicious or compromised server
+could hand you its own key instead of your friend's and read everything in the
+middle. No amount of cipher strength prevents this; strong AES over a key you
+negotiated with an impostor is perfectly encrypted and perfectly readable by
+them.
+
+The only defence is comparing keys over a channel the server does not control.
+Each profile therefore shows a **safety number** — `SHA-256(publicKey)`
+truncated to five groups of four hex characters:
+
+```
+5CC2 3243 AD9B 82E4 0659
+```
+
+Both people should see the same string. Reading it out on a call takes ten
+seconds and is the difference between "encrypted" and "encrypted *to the right
+person*". A key change also pushes a `friend:keyChanged` event, so a silent
+substitution cannot pass unnoticed.
+
 ### What this does not give you
 
 This is stated in the docs, in the code, and in the confirmation dialog,

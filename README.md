@@ -84,6 +84,7 @@ npm run test --workspace client
 | Offline outbox — nothing lost when the link drops | ✅ |
 | Friend's local time + timezone gap | ✅ |
 | **End-to-end encryption** (opt-in per conversation) | ✅ |
+| Safety numbers to verify you are talking to the right key | ✅ |
 | Media uploads, voice notes, gallery | ⏳ designed, not built |
 | Chess integrations (PGN viewer, challenges) | ⏳ designed, not built |
 | Voice / video calls | ⏳ designed, not built |
